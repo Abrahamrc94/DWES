@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jacaranda.CustomersIdComparator;
 import com.jacaranda.entity.Customer;
+import com.jacaranda.entity.Pedido;
 
 
 
@@ -39,7 +40,14 @@ public class CustomerController {
 		add(new Customer("Carolina", "Sotoca", "Sevilla", "1589473", 3));
 	}
 		};
-	
+		
+		
+//		public void addPedido(Pedido ped1) {
+//			Customer cust1= customers.get(0);
+//			cust1.getPedidos().add(ped1);
+//		}
+		  
+		
 		//Devuelve los customers en el mismo orden en que están introducidos en la lista
 	@GetMapping("/customers")
 	public List<Customer> getCustomers(){

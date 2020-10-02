@@ -56,6 +56,26 @@ public class Pedido implements Serializable{
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
+
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+
+
+	public List<Producto> getProductos() {
+		return productos;
+	}
+
+
+	public void setProductos(List<Producto> productos) {
+		this.productos = productos;
+	}
 	
 	
 }

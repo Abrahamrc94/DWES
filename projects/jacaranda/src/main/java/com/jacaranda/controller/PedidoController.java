@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jacaranda.entity.Customer;
 import com.jacaranda.entity.Pedido;
 
 @RestController
@@ -21,7 +22,6 @@ public class PedidoController {
 			add(new Pedido(null, 4, 75, "Pendiente"));
 		}
 	};
-	
 	
 	@GetMapping("/pedidos")
 	public List<Pedido> getPedidos(){

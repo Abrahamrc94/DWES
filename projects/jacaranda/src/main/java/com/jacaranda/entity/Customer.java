@@ -57,9 +57,6 @@ public class Customer implements Serializable{
 	}
 
 
-
-
-
 	public String getName() {
 		return name;
 	}
@@ -121,6 +118,14 @@ public class Customer implements Serializable{
 	}
 	public void setGender(String gender) {
 		this.gender = gender;
+	}
+
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(List<Pedido> pedidos) {
+		this.pedidos = pedidos;
 	}
 	
 	
