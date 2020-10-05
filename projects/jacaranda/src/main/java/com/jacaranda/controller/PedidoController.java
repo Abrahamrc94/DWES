@@ -69,7 +69,7 @@ public class PedidoController {
 		return respuesta;
 	}
 	
-	@DeleteMapping("/customers")
+	@DeleteMapping("/pedidos")
 	public ResponseEntity<?> deleteCustomer(@RequestBody Pedido ped1){
 		
 		Pedido pedidoToDelete=null;

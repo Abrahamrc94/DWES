@@ -50,7 +50,7 @@ public class ProductoController {
 		return respuesta;
 	}
 	
-	@PutMapping("/pedidos")
+	@PutMapping("/productos")
 	public ResponseEntity<?> modifyCustomer(@RequestBody Producto prod1){
 		
 		ResponseEntity respuesta=null;
@@ -67,7 +67,7 @@ public class ProductoController {
 		return respuesta;
 	}
 	
-	@DeleteMapping("/customers")
+	@DeleteMapping("/productos")
 	public ResponseEntity<?> deleteCustomer(@RequestBody Producto prod1){
 		
 		Producto productoToDelete=null;

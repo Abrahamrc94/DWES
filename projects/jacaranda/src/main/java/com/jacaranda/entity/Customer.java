@@ -2,6 +2,8 @@ package com.jacaranda.entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Customer implements Serializable{
 
@@ -15,7 +17,7 @@ public class Customer implements Serializable{
 	private String mobilenumber;
 	private String gender;
 	private int id;
-	
+	private List<Pedido> pedidos;
 	
 	
 	public Customer() {
@@ -29,6 +31,7 @@ public class Customer implements Serializable{
 		this.city = city;
 		this.dni = dni;
 		this.id = id;
+		pedidos = new ArrayList<Pedido>();
 	}
 	
 	
@@ -48,9 +51,8 @@ public class Customer implements Serializable{
 		this.mobilenumber = mobilenumber;
 		this.gender = gender;
 		this.id = id;
+		pedidos = new ArrayList<Pedido>();
 	}
-
-
 
 
 
@@ -116,6 +118,13 @@ public class Customer implements Serializable{
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-	
+
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(List<Pedido> pedidos) {
+		this.pedidos = pedidos;
+	}
 	
 }
