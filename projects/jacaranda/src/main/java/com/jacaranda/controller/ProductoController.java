@@ -44,8 +44,6 @@ public class ProductoController {
 				productos.add(sent);
 				respuesta=ResponseEntity.status(HttpStatus.CREATED).body(sent);
 			}
-		
-		
 		}
 		return respuesta;
 	}
