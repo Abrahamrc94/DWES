@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jacaranda.CustomersIdComparator;
 import com.jacaranda.entity.Customer;
+import com.jacaranda.entity.Pedido;
+import com.jacaranda.entity.Producto;
 
 
 
@@ -70,6 +73,21 @@ public class CustomerController {
 		return respuesta;
 	}
 	
+	
+	//Petición POST para añadir productos al pedido indicado
+		@PostMapping("/customers/{id}")
+		public ResponseEntity<?> addProducto(@PathVariable int id, @RequestBody Pedido ped){
+			ResponseEntity respuesta=ResponseEntity.status(HttpStatus.CONFLICT).body("FAILED");;
+			for(Customer c: customers) {
+				if(id==c.getId()) {
+					c.getPedidos().add(ped);
+					ped.setCustomer(c.getName());
+					respuesta=ResponseEntity.status(HttpStatus.OK).body("OK");
+				}
+			}
+			return respuesta;
+		}
+	
 	@PutMapping("/customers")
 	public ResponseEntity<?> modifyCustomer(@RequestBody Customer cust1){
 		
@@ -85,6 +103,7 @@ public class CustomerController {
 				c.setDni(cust1.getDni());
 				c.setGender(cust1.getGender());
 				c.setMobilenumber(cust1.getMobilenumber());
+				respuesta=ResponseEntity.status(HttpStatus.OK).body(cust1);
 			}else {
 				respuesta=ResponseEntity.status(HttpStatus.NOT_FOUND).body(cust1);
 			}

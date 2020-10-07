@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Pedido implements Serializable{
 
-	private Customer customer;
+	private String customer;
 	private int  id_Pedido;
 	private int total;//El precio total del pedido
 	private String estado;//Si el pedido está pendiente, entregado o en reparto
@@ -18,7 +18,7 @@ public class Pedido implements Serializable{
 	}
 
 
-	public Pedido(Customer customer, int id_Pedido, int total, String estado) {
+	public Pedido(String customer, int id_Pedido, int total, String estado) {
 		super();
 		this.customer = customer;
 		this.id_Pedido = id_Pedido;
@@ -58,12 +58,12 @@ public class Pedido implements Serializable{
 	}
 
 
-	public Customer getCustomer() {
+	public String getCustomer() {
 		return customer;
 	}
 
 
-	public void setCustomer(Customer customer) {
+	public void setCustomer(String customer) {
 		this.customer = customer;
 	}
 

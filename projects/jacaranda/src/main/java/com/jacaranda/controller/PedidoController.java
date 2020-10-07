@@ -7,14 +7,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jacaranda.entity.Customer;
 import com.jacaranda.entity.Pedido;
+import com.jacaranda.entity.Producto;
 
 @RestController
 @RequestMapping(path="/api")
@@ -45,11 +46,24 @@ public class PedidoController {
 				pedidos.add(sent);
 				respuesta=ResponseEntity.status(HttpStatus.CREATED).body(sent);
 			}
-		
-		
 		}
 		return respuesta;
 	}
+	
+	
+	//Petición POST para añadir productos al pedido indicado
+	@PostMapping("/pedidos/{id}")
+	public ResponseEntity<?> addProducto(@PathVariable int id, @RequestBody Producto prod){
+		ResponseEntity respuesta=ResponseEntity.status(HttpStatus.CONFLICT).body("FAILED");;
+		for(Pedido p: pedidos) {
+			if(id==p.getId_Pedido()) {
+				p.getProductos().add(prod);
+				respuesta=ResponseEntity.status(HttpStatus.OK).body("OK");
+			}
+		}
+		return respuesta;
+	}
+	
 	
 	@PutMapping("/pedidos")
 	public ResponseEntity<?> modifyCustomer(@RequestBody Pedido ped1){
