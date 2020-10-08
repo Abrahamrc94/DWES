@@ -1,6 +1,7 @@
 package com.jacaranda.controller;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jacaranda.entity.Customer;
 import com.jacaranda.entity.Pedido;
 import com.jacaranda.entity.Producto;
 
@@ -39,14 +41,13 @@ public class PedidoController {
 	@PostMapping("/pedidos")
 	public ResponseEntity<?> createPedido(@RequestBody Pedido sent){
 		ResponseEntity respuesta=null;
-		for(Pedido p: pedidos) {
-			if(sent.getId_Pedido()==p.getId_Pedido()) {
+		if(buscaPedido(sent.getId_Pedido())) {
 				respuesta=ResponseEntity.status(HttpStatus.CONFLICT).body(sent);
 			}else {
 				pedidos.add(sent);
 				respuesta=ResponseEntity.status(HttpStatus.CREATED).body(sent);
 			}
-		}
+		
 		return respuesta;
 	}
 	
@@ -69,12 +70,17 @@ public class PedidoController {
 	public ResponseEntity<?> modifyCustomer(@RequestBody Pedido ped1){
 		
 		ResponseEntity respuesta=null;
-		for(Pedido p: pedidos) {
-			if(ped1.getId_Pedido()==p.getId_Pedido()) {
+		boolean encontrado=false;
+		Iterator<Pedido> pedIterator= pedidos.iterator();
+		while(pedIterator.hasNext() && !encontrado) {
+			Pedido p= pedIterator.next();
+			if(p.getId_Pedido()==ped1.getId_Pedido()) {
 				p.setCustomer(ped1.getCustomer());
 				p.setEstado(ped1.getEstado());
 				p.setTotal(ped1.getTotal());
 				p.setProductos(ped1.getProductos());
+				encontrado=true;
+				respuesta=ResponseEntity.status(HttpStatus.OK).body(ped1);
 			}else {
 				respuesta=ResponseEntity.status(HttpStatus.NOT_FOUND).body(ped1);
 			}
@@ -88,11 +94,15 @@ public class PedidoController {
 		
 		Pedido pedidoToDelete=null;
 		ResponseEntity respuesta=null;
-		for(Pedido p: pedidos) {
-			if(ped1.getId_Pedido()==p.getId_Pedido()) {
+		boolean encontrado=false;
+		Iterator<Pedido> pedIterator= pedidos.iterator();
+		while(pedIterator.hasNext() && !encontrado) {
+			Pedido p= pedIterator.next();
+			if(p.getId_Pedido()==ped1.getId_Pedido()) {
 				pedidoToDelete=p;
 				pedidos.remove(pedidoToDelete);
 				respuesta=ResponseEntity.status(HttpStatus.OK).body(ped1);
+				encontrado=true;
 			}else {
 				respuesta=ResponseEntity.status(HttpStatus.NOT_FOUND).body(ped1);
 			}
@@ -101,5 +111,18 @@ public class PedidoController {
 		return respuesta;
 	}
 	
+	
+	private boolean buscaPedido(int id) {
+		boolean encontrado= false;
+		
+		Iterator<Pedido> pedIterator= pedidos.iterator();
+		while(pedIterator.hasNext() && !encontrado) {
+			Pedido p= pedIterator.next();
+			if(p.getId_Pedido()==id) {
+				encontrado=true;
+			}
+		}
+		return encontrado;
+	}
 }
 

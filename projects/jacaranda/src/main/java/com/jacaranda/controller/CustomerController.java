@@ -4,6 +4,7 @@
 package com.jacaranda.controller;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.jacaranda.CustomersIdComparator;
 import com.jacaranda.entity.Customer;
 import com.jacaranda.entity.Pedido;
-import com.jacaranda.entity.Producto;
 
 
 
@@ -60,26 +60,28 @@ public class CustomerController {
 	@PostMapping("/customers")
 	public ResponseEntity<?> createCustomer(@RequestBody Customer sent){
 		ResponseEntity respuesta=null;
-		for(Customer c: customers) {
-			if(sent.getId()==c.getId()) {
+		if(buscaCustomer(sent.getId())) {
 				respuesta=ResponseEntity.status(HttpStatus.CONFLICT).body(sent);
 			}else {
 				customers.add(sent);
 				respuesta=ResponseEntity.status(HttpStatus.CREATED).body(sent);
 			}
 		
-		
-		}
 		return respuesta;
 	}
 	
 	
-	//Petición POST para añadir productos al pedido indicado
+	//Petición POST para añadir productos al customer indicado
 		@PostMapping("/customers/{id}")
-		public ResponseEntity<?> addProducto(@PathVariable int id, @RequestBody Pedido ped){
+		public ResponseEntity<?> addPedido(@PathVariable int id, @RequestBody Pedido ped){
 			ResponseEntity respuesta=ResponseEntity.status(HttpStatus.CONFLICT).body("FAILED");;
-			for(Customer c: customers) {
-				if(id==c.getId()) {
+			
+			boolean encontrado=false;
+			Iterator<Customer> custIterator= customers.iterator();
+			while(custIterator.hasNext() && !encontrado) {
+				Customer c= custIterator.next();
+				if(c.getId()==id) {
+					encontrado=true;
 					c.getPedidos().add(ped);
 					ped.setCustomer(c.getName());
 					respuesta=ResponseEntity.status(HttpStatus.OK).body("OK");
@@ -92,8 +94,11 @@ public class CustomerController {
 	public ResponseEntity<?> modifyCustomer(@RequestBody Customer cust1){
 		
 		ResponseEntity respuesta=null;
-		for(Customer c: customers) {
-			if(cust1.getId()==c.getId()) {
+		boolean encontrado=false;
+		Iterator<Customer> custIterator= customers.iterator();
+		while(custIterator.hasNext() && !encontrado) {
+			Customer c= custIterator.next();
+			if(c.getId()==cust1.getId()) {
 				c.setName(cust1.getName());
 				c.setSurname(cust1.getSurname());
 				c.setAddres(cust1.getAddres());
@@ -104,6 +109,7 @@ public class CustomerController {
 				c.setGender(cust1.getGender());
 				c.setMobilenumber(cust1.getMobilenumber());
 				respuesta=ResponseEntity.status(HttpStatus.OK).body(cust1);
+				encontrado=true;
 			}else {
 				respuesta=ResponseEntity.status(HttpStatus.NOT_FOUND).body(cust1);
 			}
@@ -117,10 +123,14 @@ public class CustomerController {
 		
 		Customer customerToDelete=null;
 		ResponseEntity respuesta=null;
-		for(Customer c: customers) {
-			if(cust1.getId()==c.getId()) {
+		boolean encontrado=false;
+		Iterator<Customer> custIterator= customers.iterator();
+		while(custIterator.hasNext() && !encontrado) {
+			Customer c= custIterator.next();
+			if(c.getId()==cust1.getId()) {
 				customerToDelete=c;
 				customers.remove(customerToDelete);
+				encontrado=true;
 				respuesta=ResponseEntity.status(HttpStatus.OK).body(cust1);
 			}else {
 				respuesta=ResponseEntity.status(HttpStatus.NOT_FOUND).body(cust1);
@@ -128,6 +138,19 @@ public class CustomerController {
 		}
 		
 		return respuesta;
+	}
+	
+	private boolean buscaCustomer(int id) {
+		boolean encontrado= false;
+		
+		Iterator<Customer> custIterator= customers.iterator();
+		while(custIterator.hasNext() && !encontrado) {
+			Customer c= custIterator.next();
+			if(c.getId()==id) {
+				encontrado=true;
+			}
+		}
+		return encontrado;
 	}
 
 }

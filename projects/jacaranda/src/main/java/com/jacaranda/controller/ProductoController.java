@@ -1,6 +1,7 @@
 package com.jacaranda.controller;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -37,14 +38,12 @@ public class ProductoController {
 	@PostMapping("/productos")
 	public ResponseEntity<?> createPedido(@RequestBody Producto sent){
 		ResponseEntity respuesta=null;
-		for(Producto p: productos) {
-			if(sent.getNombre()==p.getNombre()) {
+		if(buscaProducto(sent.getNombre())) {
 				respuesta=ResponseEntity.status(HttpStatus.CONFLICT).body(sent);
 			}else {
 				productos.add(sent);
 				respuesta=ResponseEntity.status(HttpStatus.CREATED).body(sent);
 			}
-		}
 		return respuesta;
 	}
 	
@@ -52,11 +51,15 @@ public class ProductoController {
 	public ResponseEntity<?> modifyCustomer(@RequestBody Producto prod1){
 		
 		ResponseEntity respuesta=null;
-		for(Producto p: productos) {
-			if(prod1.getNombre()==p.getNombre()) {
+		boolean encontrado=false;
+		Iterator<Producto> prodIterator= productos.iterator();
+		while(prodIterator.hasNext() && !encontrado) {
+			Producto p= prodIterator.next();
+			if(p.getNombre()== prod1.getNombre()) {
 				p.setPrecio(prod1.getPrecio());
 				p.setStock(prod1.getStock());
-	
+				encontrado= true;
+				respuesta=ResponseEntity.status(HttpStatus.ACCEPTED).body(prod1);
 			}else {
 				respuesta=ResponseEntity.status(HttpStatus.NOT_FOUND).body(prod1);
 			}
@@ -83,5 +86,16 @@ public class ProductoController {
 		return respuesta;
 	}
 	
-	
+	private boolean buscaProducto(String nombre) {
+		boolean encontrado= false;
+		
+		Iterator<Producto> prodIterator= productos.iterator();
+		while(prodIterator.hasNext() && !encontrado) {
+			Producto p= prodIterator.next();
+			if(p.getNombre()==nombre) {
+				encontrado=true;
+			}
+		}
+		return encontrado;
+	}
 }
