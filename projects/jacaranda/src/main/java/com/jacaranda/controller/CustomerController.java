@@ -71,10 +71,10 @@ public class CustomerController {
 	}
 	
 	
-	//Petición POST para añadir productos al customer indicado
+	//Petición POST para añadir pedidos al customer indicado
 		@PostMapping("/customers/{id}")
 		public ResponseEntity<?> addPedido(@PathVariable int id, @RequestBody Pedido ped){
-			ResponseEntity respuesta=ResponseEntity.status(HttpStatus.CONFLICT).body("FAILED");;
+			ResponseEntity respuesta=ResponseEntity.status(HttpStatus.CONFLICT).body("FAILED");
 			
 			boolean encontrado=false;
 			Iterator<Customer> custIterator= customers.iterator();

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jacaranda.entity.Customer;
 import com.jacaranda.entity.Pedido;
 import com.jacaranda.entity.Producto;
 
