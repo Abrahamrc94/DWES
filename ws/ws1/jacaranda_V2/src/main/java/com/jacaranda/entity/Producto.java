@@ -2,8 +2,17 @@ package com.jacaranda.entity;
 
 import java.io.Serializable;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Producto implements Serializable{
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 	private String nombre;
 	private int precio;
 	private int stock;
@@ -17,6 +26,14 @@ public class Producto implements Serializable{
 		this.nombre = nombre;
 		this.precio = precio;
 		this.stock = stock;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getNombre() {
