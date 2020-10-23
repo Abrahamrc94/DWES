@@ -83,7 +83,7 @@ public class CustomerController {
 				if(c.getId()==id) {
 					encontrado=true;
 					c.getPedidos().add(ped);
-					ped.setCustomer(c.getName());
+					ped.setCustomer(c);
 					respuesta=ResponseEntity.status(HttpStatus.OK).body("OK");
 				}
 			}

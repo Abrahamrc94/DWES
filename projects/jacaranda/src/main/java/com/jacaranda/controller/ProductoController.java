@@ -6,19 +6,22 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jacaranda.entity.Pedido;
+import com.jacaranda.entity.Customer;
 import com.jacaranda.entity.Producto;
 
 @RestController
 @RequestMapping(path="/api")
+@CrossOrigin(origins="*")
 public class ProductoController {
 
 	private List<Producto> productos= new ArrayList<>() {
@@ -33,6 +36,26 @@ public class ProductoController {
 	@GetMapping("/productos")
 	public List<Producto> getProductos(){
 		return productos;
+	}
+	
+	
+	//Método realizado para la asignatura de integración de frontend y backend
+	@GetMapping("/productos/{nombre}")
+	public ResponseEntity<?> buscaProductoId(@PathVariable String nombre){
+		ResponseEntity respuesta=null;
+		
+		boolean encontrado=false;
+		Iterator<Producto> prodIterator= productos.iterator();
+		while(prodIterator.hasNext() && !encontrado) {
+			Producto p= prodIterator.next();
+			if(p.getNombre().equalsIgnoreCase(nombre)) {
+				encontrado=true;
+				respuesta=ResponseEntity.status(HttpStatus.OK).body(p);
+			}else {
+				respuesta=ResponseEntity.status(HttpStatus.NOT_FOUND).body(p);
+			}
+		}
+		return  respuesta;
 	}
 	
 	@PostMapping("/productos")
