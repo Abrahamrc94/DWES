@@ -61,7 +61,7 @@ public class ProductoController {
 	@PostMapping("/productos")
 	public ResponseEntity<?> createPedido(@RequestBody Producto sent){
 		ResponseEntity respuesta=null;
-		if(buscaProducto(sent.getNombre())) {
+		if(buscaProducto(sent.getNombre())==true) {
 				respuesta=ResponseEntity.status(HttpStatus.CONFLICT).body(sent);
 			}else {
 				productos.add(sent);
