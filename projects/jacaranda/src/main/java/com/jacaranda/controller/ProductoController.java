@@ -42,7 +42,7 @@ public class ProductoController {
 	//Método realizado para la asignatura de integración de frontend y backend
 	@GetMapping("/productos/{nombre}")
 	public ResponseEntity<?> buscaProductoId(@PathVariable String nombre){
-		ResponseEntity respuesta=null;
+		ResponseEntity<?> respuesta=null;
 		
 		boolean encontrado=false;
 		Iterator<Producto> prodIterator= productos.iterator();
@@ -60,7 +60,7 @@ public class ProductoController {
 	
 	@PostMapping("/productos")
 	public ResponseEntity<?> createPedido(@RequestBody Producto sent){
-		ResponseEntity respuesta=null;
+		ResponseEntity<?> respuesta=null;
 		if(buscaProducto(sent.getNombre())==true) {
 				respuesta=ResponseEntity.status(HttpStatus.CONFLICT).body(sent);
 			}else {
@@ -73,7 +73,7 @@ public class ProductoController {
 	@PutMapping("/productos")
 	public ResponseEntity<?> modifyCustomer(@RequestBody Producto prod1){
 		
-		ResponseEntity respuesta=null;
+		ResponseEntity<?> respuesta=null;
 		boolean encontrado=false;
 		Iterator<Producto> prodIterator= productos.iterator();
 		while(prodIterator.hasNext() && !encontrado) {
@@ -95,7 +95,7 @@ public class ProductoController {
 	public ResponseEntity<?> deleteCustomer(@RequestBody Producto prod1){
 		
 		Producto productoToDelete=null;
-		ResponseEntity respuesta=null;
+		ResponseEntity<?> respuesta=null;
 		for(Producto p: productos) {
 			if(prod1.getNombre()==p.getNombre()) {
 				productoToDelete=p;
