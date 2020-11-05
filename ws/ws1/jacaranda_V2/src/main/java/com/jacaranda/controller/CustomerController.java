@@ -4,9 +4,9 @@
 package com.jacaranda.controller;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jacaranda.CustomersIdComparator;
 import com.jacaranda.entity.Customer;
-import com.jacaranda.entity.Pedido;
+
+import service.CheckService;
+import service.UpdateService;
 
 
 
@@ -50,6 +52,13 @@ public class CustomerController {
 //	}
 	
 		
+		//Creamos los servicios
+		@Autowired
+		private CheckService checkService;
+		@Autowired
+		private UpdateService updateService;	
+		
+		
 	//Devuelve los datos ordenados por el id
 	@GetMapping("/customers")
 	public List<Customer> getCustomersOrden(){
@@ -57,100 +66,60 @@ public class CustomerController {
 		return customers;
 	}
 	
-	@PostMapping("/customers")
-	public ResponseEntity<?> createCustomer(@RequestBody Customer sent){
-		ResponseEntity respuesta=null;
-		if(buscaCustomer(sent.getId())) {
-				respuesta=ResponseEntity.status(HttpStatus.CONFLICT).body(sent);
-			}else {
-				customers.add(sent);
-				respuesta=ResponseEntity.status(HttpStatus.CREATED).body(sent);
-			}
-		
-		return respuesta;
-	}
-	
-	
-	//Petición POST para añadir pedidos al customer indicado
-		@PostMapping("/customers/{id}")
-		public ResponseEntity<?> addPedido(@PathVariable int id, @RequestBody Pedido ped){
-			ResponseEntity respuesta=ResponseEntity.status(HttpStatus.CONFLICT).body("FAILED");
-			
-			boolean encontrado=false;
-			Iterator<Customer> custIterator= customers.iterator();
-			while(custIterator.hasNext() && !encontrado) {
-				Customer c= custIterator.next();
-				if(c.getId()==id) {
-					encontrado=true;
-					c.getPedidos().add(ped);
-					ped.setCustomer(c);
-					respuesta=ResponseEntity.status(HttpStatus.OK).body("OK");
+	//Devuelve un customer en concreto
+			@GetMapping("/customers/{id}")
+			public ResponseEntity<?> getCustomerId(@PathVariable int id){
+				Customer customer = checkService.comprobarCustomer(customers, id);
+				ResponseEntity<?> respuesta;
+				if(customer == null) {
+					respuesta = ResponseEntity.status(HttpStatus.NOT_FOUND).body("El customer no existe");
+				}else {
+					respuesta = ResponseEntity.status(HttpStatus.OK).body(customer);
 				}
+				return respuesta;
 			}
-			return respuesta;
-		}
-	
-	@PutMapping("/customers")
-	public ResponseEntity<?> modifyCustomer(@RequestBody Customer cust1){
-		
-		ResponseEntity respuesta=null;
-		boolean encontrado=false;
-		Iterator<Customer> custIterator= customers.iterator();
-		while(custIterator.hasNext() && !encontrado) {
-			Customer c= custIterator.next();
-			if(c.getId()==cust1.getId()) {
-				c.setName(cust1.getName());
-				c.setSurname(cust1.getSurname());
-				c.setAddres(cust1.getAddres());
-				c.setBirthdate(cust1.getBirthdate());
-				c.setCity(cust1.getCity());
-				c.setCountry(cust1.getCountry());
-				c.setDni(cust1.getDni());
-				c.setGender(cust1.getGender());
-				c.setMobilenumber(cust1.getMobilenumber());
-				respuesta=ResponseEntity.status(HttpStatus.OK).body(cust1);
-				encontrado=true;
-			}else {
-				respuesta=ResponseEntity.status(HttpStatus.NOT_FOUND).body(cust1);
+			
+			@PostMapping("/customers")
+			public ResponseEntity<?> createCustomer(@RequestBody Customer sent){
+				ResponseEntity respuesta;
+				Customer customer = checkService.comprobarCustomer(customers, sent.getId());
+				if(customer == null) {
+					customers.add(sent);
+					respuesta = ResponseEntity.status(HttpStatus.CREATED).body("El customer se ha creado");
+				}else {
+					respuesta = ResponseEntity.status(HttpStatus.CONFLICT).body("Ya existe el customer");
+				}
+				return respuesta;
 			}
-		}
-		
-		return respuesta;
-	}
-	
-	@DeleteMapping("/customers")
-	public ResponseEntity<?> deleteCustomer(@RequestBody Customer cust1){
-		
-		Customer customerToDelete=null;
-		ResponseEntity respuesta=null;
-		boolean encontrado=false;
-		Iterator<Customer> custIterator= customers.iterator();
-		while(custIterator.hasNext() && !encontrado) {
-			Customer c= custIterator.next();
-			if(c.getId()==cust1.getId()) {
-				customerToDelete=c;
-				customers.remove(customerToDelete);
-				encontrado=true;
-				respuesta=ResponseEntity.status(HttpStatus.OK).body(cust1);
-			}else {
-				respuesta=ResponseEntity.status(HttpStatus.NOT_FOUND).body(cust1);
+			
+			@PutMapping("/customers")
+			public ResponseEntity<?> modifyPedido(@RequestBody Customer sent){
+				ResponseEntity respuesta;
+				Customer customer = checkService.comprobarCustomer(customers, sent.getId());
+				if(customer == null) {
+					respuesta = ResponseEntity.status(HttpStatus.NOT_FOUND).body("No existe el customer");
+				}else {
+					updateService.upCustomer(customer, sent);
+					respuesta = ResponseEntity.status(HttpStatus.ACCEPTED).body("Se ha actualziado el customer");
+				}
+				return respuesta;
+			
 			}
-		}
-		
-		return respuesta;
-	}
-	
-	private boolean buscaCustomer(int id) {
-		boolean encontrado= false;
-		
-		Iterator<Customer> custIterator= customers.iterator();
-		while(custIterator.hasNext() && !encontrado) {
-			Customer c= custIterator.next();
-			if(c.getId()==id) {
-				encontrado=true;
+			
+			@DeleteMapping("/customers")
+			public ResponseEntity<?> deletePedido(@RequestBody Customer sent){
+				
+				Customer customerToDelete=checkService.comprobarCustomer(customers, sent.getId());
+				ResponseEntity respuesta;
+				
+					if(customerToDelete==null) {
+						respuesta=ResponseEntity.status(HttpStatus.NOT_FOUND).body("No existe el customer");
+					}else {
+						customers.remove(customerToDelete);
+						respuesta=ResponseEntity.status(HttpStatus.ACCEPTED).body("Se ha eliminado el customer");
+					}
+				
+				return respuesta;
 			}
-		}
-		return encontrado;
-	}
 
 }

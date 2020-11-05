@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jacaranda.entity.Customer;
 import com.jacaranda.entity.Producto;
 
 @RestController
@@ -32,6 +32,9 @@ public class ProductoController {
 			add(new Producto("Chocolate", 12, 120));
 		}
 	};
+	
+	
+	
 	
 	@GetMapping("/productos")
 	public List<Producto> getProductos(){
