@@ -17,89 +17,58 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jacaranda.entity.Producto;
-
-import service.CheckService;
-import service.UpdateService;
+import com.jacaranda.service.ProductoService;
+import com.jacaranda.service.PedidoService;
 
 @RestController
 @RequestMapping(path="/api")
 public class ProductoController {
 
-	private List<Producto> productos= new ArrayList<>() {
-		{
-			add(new Producto("Patatas", 10, 100));
-			add(new Producto("Garbanzos", 5, 75));
-			add(new Producto("Coca-Cola", 7, 90));
-			add(new Producto("Chocolate", 12, 120));
-		}
-	};
-	
 	//Creamos los servicios
-			@Autowired
-			private CheckService checkService;
-			@Autowired
-			private UpdateService updateService;
+	@Autowired
+	private ProductoService productoService;
 	
+			
 	//Devuelve todos los productos
 	@GetMapping("/productos")
-	public List<Producto> getProductos(){
-		return productos;
+	public ResponseEntity<?> getProductos(){
+		return productoService.getProducts();
 	}
 	
-	//Devuelve un producto en concreto
+	//Devuelve un producto en concreto segun el nombre
 	@GetMapping("/productos/{nombre}")
 	public ResponseEntity<?> getProductoNombre(@PathVariable String nombre){
-		Producto producto = checkService.comprobarProducto(productos, nombre);
-		ResponseEntity<?> respuesta;
-		if(producto == null) {
-			respuesta = ResponseEntity.status(HttpStatus.NOT_FOUND).body("El producto no existe");
-		}else {
-			respuesta = ResponseEntity.status(HttpStatus.OK).body(producto);
-		}
-		return respuesta;
+		return ResponseEntity.ok(productoService.getProductoByNombre(nombre));
 	}
 	
+	//Devuelve un producto segun el id
+	@GetMapping("/productos/{id}")
+	public ResponseEntity<?> getProductoId(@PathVariable int id){
+		return ResponseEntity.ok(productoService.getProductoById(id));
+	}
+	
+	//Devuelve todos los productos ordenados por nombre
+	@GetMapping("/productos/nombres")
+	public List<Producto> getProductosOrderByNombre(){
+		return productoService.getProductoOrderByNombre();
+	}
+		
+	
+	//Crea un producto
 	@PostMapping("/productos")
-	public ResponseEntity<?> createProducto(@RequestBody Producto sent){
-		ResponseEntity respuesta;
-		Producto producto = checkService.comprobarProducto(productos, sent.getNombre());
-		if(producto == null) {
-			productos.add(sent);
-			respuesta = ResponseEntity.status(HttpStatus.CREATED).body("El producto se ha creado");
-		}else {
-			respuesta = ResponseEntity.status(HttpStatus.CONFLICT).body("Ya existe el producto");
-		}
-		return respuesta;
+	public Producto createProducto(@RequestBody Producto sent){
+		return productoService.saveProducto(sent);
 	}
 	
-	@PutMapping("/productos")
-	public ResponseEntity<?> modifyProducto(@RequestBody Producto sent){
-		ResponseEntity respuesta;
-		Producto producto = checkService.comprobarProducto(productos, sent.getNombre());
-		if(producto == null) {
-			respuesta = ResponseEntity.status(HttpStatus.NOT_FOUND).body("No existe el producto");
-		}else {
-			updateService.upProduct(producto, sent);
-			respuesta = ResponseEntity.status(HttpStatus.ACCEPTED).body("Se ha actualziado el producto");
-		}
-		return respuesta;
 	
-	}
+	//Modifica un producto PUT
+
 	
-	@DeleteMapping("/productos")
-	public ResponseEntity<?> deleteProducto(@RequestBody Producto sent){
-		
-		Producto productoToDelete=checkService.comprobarProducto(productos, sent.getNombre());
-		ResponseEntity respuesta;
-		
-			if(productoToDelete==null) {
-				respuesta=ResponseEntity.status(HttpStatus.NOT_FOUND).body("No existe el producto");
-			}else {
-				productos.remove(productoToDelete);
-				respuesta=ResponseEntity.status(HttpStatus.ACCEPTED).body("Se ha eliminado el producto");
-			}
-		
-		return respuesta;
+	
+	//Borra un producto
+	@DeleteMapping("/productos/{id}")
+	public void deleteProducto(@RequestBody int id){
+		productoService.deleteProducto(id);
 	}
 
 }
