@@ -32,37 +32,37 @@ public class CustomerController {
 		private CustomerService customerService;
 		
 				
-		//Devuelve todos los productos
+		//Devuelve todos los customers
 		@GetMapping("/customers")
 		public ResponseEntity<?> getCustomers(){
 			return customerService.getCustomers();
 		}
 		
-		//Devuelve pedidos ordenados segun el nombre
+		//Devuelve customers ordenados segun el nombre
 		@GetMapping("/customers/nombres")
 		public ResponseEntity<?> getCustomerOrderByNombre(){
 			return ResponseEntity.ok(customerService.getCustomerOrderByNombre());
 		}
 		
-		//Devuelve un pedido segun el id
+		//Devuelve un customer segun el id
 		@GetMapping("/customers/{id}")
 		public ResponseEntity<?> getCustomerId(@PathVariable int id){
 			return ResponseEntity.ok(customerService.getCustomerById(id));
 		}
 			
 		
-		//Crea un pedido
+		//Crea un customer
 		@PostMapping("/customers")
 		public Customer createCustomer(@RequestBody Customer sent){
 			return customerService.saveCustomer(sent);
 		}
 		
 		
-		//Modifica un pedido PUT
+		//Modifica un customer PUT
 
 		
 		
-		//Borra un pedido
+		//Borra un customer
 		@DeleteMapping("/customers/{id}")
 		public void deleteCustomer(@RequestBody int id){
 			customerService.deleteCustomer(id);

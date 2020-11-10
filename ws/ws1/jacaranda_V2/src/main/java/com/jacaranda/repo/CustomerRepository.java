@@ -13,13 +13,13 @@ public interface CustomerRepository extends CrudRepository<Customer, Integer>{
 
 	
 			// Get de un customer por nombre
-			public  List<Customer> findCustomerbyName(String name);
+			public Customer findCustomerByName(String name);
 
 			//Busca un producto por id
 			public Customer findCustomerById(int id);
 			
 			
 			// Get de todos los productos ordenado por nombre
-			@Query(value = "select * from customer order by nombre", nativeQuery = true)
+			@Query(value = "select * from customer order by name", nativeQuery = true)
 			public List<Customer> findAllOrderedByName();
 }

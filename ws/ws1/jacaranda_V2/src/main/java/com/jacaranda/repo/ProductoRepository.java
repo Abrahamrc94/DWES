@@ -13,7 +13,7 @@ public interface ProductoRepository extends CrudRepository<Producto, Integer>{
 	
 
 		// Get de un producto por nombre
-		public  Producto findProductobyName(String name);
+		public  Producto findProductoByNombre(String nombre);
 
 		//Busca un producto por id
 		public Producto findProductoById(int id);

@@ -20,7 +20,8 @@ public class Pedido implements Serializable{
 	@JoinColumn(name = "customer_id", foreignKey = @ForeignKey(name = "Customer_ID_FK"))
 	private Customer customerId;
 	@Id
-	private int  id_Pedido;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int  id;
 	private int total;//El precio total del pedido
 	private String estado;//Si el pedido está pendiente, entregado o en reparto
 	@OneToMany
@@ -33,23 +34,23 @@ public class Pedido implements Serializable{
 	}
 
 
-	public Pedido(Customer customerId, int id_Pedido, int total, String estado) {
+	public Pedido(Customer customerId, int id, int total, String estado) {
 		super();
 		this.customerId = customerId;
-		this.id_Pedido = id_Pedido;
+		this.id = id;
 		this.total = total;
 		this.estado = estado;
 		productos = new ArrayList<Producto>();
 	}
 
 
-	public int getId_Pedido() {
-		return id_Pedido;
+	public int getId() {
+		return id;
 	}
 
 
-	public void setId_Pedido(int id_Pedido) {
-		this.id_Pedido = id_Pedido;
+	public void setId_(int id) {
+		this.id = id;
 	}
 
 

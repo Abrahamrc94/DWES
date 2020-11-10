@@ -27,7 +27,7 @@ public class ProductoService {
 	
 	//Get para un producto por nombre
 	public Producto getProductoByNombre(String nombre) {
-		return productoRepository.findProductobyName(nombre);
+		return productoRepository.findProductoByNombre(nombre);
 	
 	}
 	

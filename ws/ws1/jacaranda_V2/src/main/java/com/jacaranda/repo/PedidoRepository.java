@@ -12,7 +12,7 @@ import com.jacaranda.entity.Pedido;
 public interface PedidoRepository extends CrudRepository<Pedido, Integer>{
 
 			// Get de un pedido por nombre
-			public  List<Pedido> findPedidobyName(String name);
+			//public  Pedido findPedidoByName(String name);
 
 			//Busca un pedido por id
 			public Pedido findPedidoById(int id);
