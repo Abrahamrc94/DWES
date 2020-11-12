@@ -7,10 +7,14 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Customer implements Serializable{
@@ -26,6 +30,12 @@ public class Customer implements Serializable{
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Pedido> pedidos;
+	
+	@OneToMany
+	@JoinColumn(name="customer_id", foreignKey = @ForeignKey(name="customer_id_fk"), nullable = true)
+	@JsonIgnore
+	private List<Document> documents;
+	
 	
 	
 	public Customer() {
@@ -102,6 +112,14 @@ public class Customer implements Serializable{
 
 	public void setPedidos(List<Pedido> pedidos) {
 		this.pedidos = pedidos;
+	}
+	
+	public List<Document> getDocuments() {
+		return documents;
+	}
+
+	public void setDocuments(List<Document> documents) {
+		this.documents = documents;
 	}
 	
 }

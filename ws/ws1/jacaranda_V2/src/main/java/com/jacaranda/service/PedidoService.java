@@ -7,10 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.jacaranda.entity.Customer;
 import com.jacaranda.entity.Pedido;
 import com.jacaranda.entity.Producto;
 import com.jacaranda.repo.PedidoRepository;
+import com.jacaranda.repo.ProductoRepository;
 
 @Service
 public class PedidoService {
@@ -18,6 +18,8 @@ public class PedidoService {
 	//Repositorios
 	@Autowired
 	private PedidoRepository pedidoRepository;
+	@Autowired
+	private ProductoRepository productoRepository;
 	
 	// Servicios
 	@Autowired
@@ -29,7 +31,7 @@ public class PedidoService {
 	}
 	
 	//Get para un pedido por id
-	public Pedido getPedidoById(int id) {
+	public Pedido getPedidoById(Long id) {
 		return pedidoRepository.findPedidoById(id);
 	
 	}
@@ -44,8 +46,27 @@ public class PedidoService {
 		return pedidoRepository.save(sent);
 	}
 	
+	//Añadir un prodcuto a pedido
+	public Pedido addProducto(Producto newProducto, Long idPedido) {
+		// se guarda el pedido en una variable auxiliar
+		Pedido auxPedido = pedidoRepository.findPedidoById(idPedido);
+			
+		// se guarda el producto en la BBDD
+		productoRepository.save(newProducto);
+				
+		// se inserta el producto al pedido
+		auxPedido.getProductos().add(newProducto);
+				
+		// se guarda el pedido en la BBDD
+		pedidoRepository.save(auxPedido);
+			
+		return auxPedido;
+		}
+	
+	
+	
 	//Actualizar un pedido
-	public ResponseEntity<?> updatePedido(int id, Pedido sent) {
+	public ResponseEntity<?> updatePedido(Long id, Pedido sent) {
 		Pedido p = pedidoRepository.findPedidoById(id);
 		ResponseEntity<?> response;
 		if (p == null) {

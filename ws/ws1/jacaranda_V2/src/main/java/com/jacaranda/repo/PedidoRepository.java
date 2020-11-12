@@ -15,7 +15,7 @@ public interface PedidoRepository extends CrudRepository<Pedido, Integer>{
 			//public  Pedido findPedidoByName(String name);
 
 			//Busca un pedido por id
-			public Pedido findPedidoById(int id);
+			public Pedido findPedidoById(Long id);
 			
 			
 			// Get de todos los pedidos ordenado por nombre

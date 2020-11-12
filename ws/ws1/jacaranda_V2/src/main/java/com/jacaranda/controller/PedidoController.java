@@ -1,6 +1,7 @@
 package com.jacaranda.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jacaranda.entity.Customer;
 import com.jacaranda.entity.Pedido;
+import com.jacaranda.entity.Producto;
 import com.jacaranda.service.PedidoService;
 
 @RestController
@@ -39,7 +41,7 @@ public class PedidoController {
 	
 	//Devuelve un pedido segun el id
 	@GetMapping("/pedido/{id}")
-	public ResponseEntity<?> getPedidoId(@PathVariable int id){
+	public ResponseEntity<?> getPedidoId(@PathVariable Long id){
 		return ResponseEntity.ok(pedidoService.getPedidoById(id));
 	}
 		
@@ -51,9 +53,26 @@ public class PedidoController {
 	}
 	
 	
+	//Asigna un producto al pedido
+	@PostMapping("/pedido/{id}")
+	public ResponseEntity<?> addProducto(@RequestBody Producto newProducto, @PathVariable Long id) {
+				
+		ResponseEntity<?> response = null;
+		Pedido resultado = pedidoService.addProducto(newProducto, id);
+				
+		if (resultado == null) {
+			response = ResponseEntity.status(HttpStatus.CONFLICT).body("Ha surgido algo inesperado");
+		} else {
+			response = ResponseEntity.status(HttpStatus.OK).body(resultado);
+		}
+				
+		return response;
+	}
+	
+	
 	//Modifica un pedido PUT
 	@PutMapping(path = "/pedido/{id}")
-	public ResponseEntity<?> updatePedido(@PathVariable int id, @RequestBody Pedido sent) {
+	public ResponseEntity<?> updatePedido(@PathVariable Long id, @RequestBody Pedido sent) {
 		return pedidoService.updatePedido(id, sent);
 	}
 	
