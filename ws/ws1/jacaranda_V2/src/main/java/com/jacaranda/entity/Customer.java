@@ -1,16 +1,15 @@
 package com.jacaranda.entity;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -18,14 +17,14 @@ public class Customer implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Long customerId;
+	@Column(nullable = false)
 	private String name;
 	private String surname;
 	private String dni;
 	private String gender;
 
-	@OneToMany
-	@JoinColumn(name="id_Pedido", foreignKey = @ForeignKey(name="id_Pedido_fk"), nullable = false, insertable=false, updatable=false)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Pedido> pedidos;
 	
 	
@@ -33,12 +32,12 @@ public class Customer implements Serializable{
 		super();
 	}
 
-	public Customer(String name, String surname, String dni, int id) {
+	public Customer(String name, String surname, String dni, Long id) {
 		super();
 		this.name = name;
 		this.surname = surname;
 		this.dni = dni;
-		this.id = id;
+		this.customerId = id;
 		pedidos = new ArrayList<Pedido>();
 	}
 	
@@ -46,13 +45,13 @@ public class Customer implements Serializable{
 	
 	
 	
-	public Customer(String name, String surname, String dni, String gender, int id) {
+	public Customer(String name, String surname, String dni, String gender, Long id) {
 		super();
 		this.name = name;
 		this.surname = surname;
 		this.dni = dni;
 		this.gender = gender;
-		this.id = id;
+		this.customerId = id;
 		pedidos = new ArrayList<Pedido>();
 	}
 
@@ -82,12 +81,12 @@ public class Customer implements Serializable{
 		this.dni = dni;
 	}
 	
-	public int getId() {
-		return id;
+	public Long getId() {
+		return customerId;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setId(Long id) {
+		this.customerId = id;
 	}
 	
 	public String getGender() {

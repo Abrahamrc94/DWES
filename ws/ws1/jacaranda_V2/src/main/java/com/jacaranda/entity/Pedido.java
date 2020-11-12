@@ -4,28 +4,25 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class Pedido implements Serializable{
 
-	@ManyToOne
-	@JoinColumn(name = "customer_id", foreignKey = @ForeignKey(name = "Customer_ID_FK"))
-	private Customer customerId;
+	//@ManyToOne
+	//@JoinColumn(name = "customerId", foreignKey = @ForeignKey(name = "Customer_ID_FK"))
+	private Long customerId;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int  id;
 	private int total;//El precio total del pedido
 	private String estado;//Si el pedido está pendiente, entregado o en reparto
-	@OneToMany
-	@JoinColumn(foreignKey = @ForeignKey(name = "producto_fk"), name = "producto_nombre", insertable=false, updatable=false)
+	@ManyToMany(cascade = CascadeType.ALL)
 	private List<Producto> productos;
 	
 	
@@ -34,7 +31,7 @@ public class Pedido implements Serializable{
 	}
 
 
-	public Pedido(Customer customerId, int id, int total, String estado) {
+	public Pedido(Long customerId, int id, int total, String estado) {
 		super();
 		this.customerId = customerId;
 		this.id = id;
@@ -74,13 +71,13 @@ public class Pedido implements Serializable{
 	}
 
 
-	public Customer getCustomer() {
+	public Long getCustomer() {
 		return customerId;
 	}
 
 
-	public void setCustomer(Customer customerId) {
-		this.customerId = customerId;
+	public void setCustomer(Long idCustomer) {
+		this.customerId = idCustomer;
 	}
 
 

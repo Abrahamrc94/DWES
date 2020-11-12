@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.jacaranda.entity.Customer;
+import com.jacaranda.entity.Pedido;
 import com.jacaranda.entity.Producto;
 import com.jacaranda.repo.ProductoRepository;
 
@@ -18,6 +19,10 @@ public class ProductoService {
 	
 	@Autowired
 	private ProductoRepository productoRepository;
+	
+	// Servicios
+	@Autowired
+	private UpdateService updateService;
 
 	//Get de todos los productos
 	public ResponseEntity<?> getProducts() {
@@ -45,6 +50,19 @@ public class ProductoService {
 	//Crear un nuevo producto
 	public Producto saveProducto(Producto sent) {
 		return productoRepository.save(sent);
+	}
+	
+	//Actualizar un producto
+	public ResponseEntity<?> updateProducto(int id, Producto sent) {
+		Producto p = productoRepository.findProductoById(id);
+		ResponseEntity<?> response;
+		if (p == null) {
+			response = ResponseEntity.notFound().build();
+		} else {
+			updateService.updateProducto(p, sent);
+			response = ResponseEntity.ok(productoRepository.save(p));
+		}
+		return response;
 	}
 	
 	

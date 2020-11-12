@@ -16,7 +16,7 @@ public interface CustomerRepository extends CrudRepository<Customer, Integer>{
 			public Customer findCustomerByName(String name);
 
 			//Busca un producto por id
-			public Customer findCustomerById(int id);
+			public Customer findCustomerBycustomerId(Long id);
 			
 			
 			// Get de todos los productos ordenado por nombre
