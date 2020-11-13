@@ -30,7 +30,7 @@ public class DocumentController {
 	private DocumentService documentService;
 	
 	@Autowired
-	private IService<Document> service;
+	private IService<Customer> service;
 	
 	//Devuelve un documento
 	@GetMapping("/document/{id}")

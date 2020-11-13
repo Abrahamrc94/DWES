@@ -20,7 +20,7 @@ import com.jacaranda.repo.CustomerRepository;
 import com.jacaranda.repo.DocumentRepository;
 
 @Service
-public class DocumentService {
+public class DocumentService extends AbstractServiceUtils{
 
 	@Autowired
 	private DocumentRepository documentRepository;
@@ -40,7 +40,6 @@ public class DocumentService {
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + document.getFileName() + "\"")
                 .body(new ByteArrayResource(document.getFile().getBytes(1, (int) document.getFile().length())));
 	}
-
 
 	public List<Document> getCustomerDocuments(Long idCustomer) {
 		

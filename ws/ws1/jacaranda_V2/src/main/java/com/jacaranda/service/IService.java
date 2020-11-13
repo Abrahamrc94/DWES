@@ -10,9 +10,9 @@ public interface IService<T> {
 	
 	public static final String NUMBER_REG = "[0-9]*";
 	
-	public T findByID(String id) throws NumberFormatException, NotFoundException;
+	//public T findByID(String id) throws NumberFormatException, NotFoundException;
 	
-	public T findByName(String name) throws NotFoundException;
+	//public T findByName(String name) throws NotFoundException;
 	
 	/**
 	 * Add a new Document to this entity
