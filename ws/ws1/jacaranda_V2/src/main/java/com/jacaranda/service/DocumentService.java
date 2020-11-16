@@ -35,10 +35,7 @@ public class DocumentService extends AbstractServiceUtils{
 	public ResponseEntity<Resource> viewDocument(Long idDoc) throws SQLException{
 		Document document = documentRepository.findById(idDoc).get();
 		
-		return ResponseEntity.ok()
-				.contentType(MediaType.parseMediaType(document.getFileType()))
-				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + document.getFileName() + "\"")
-                .body(new ByteArrayResource(document.getFile().getBytes(1, (int) document.getFile().length())));
+		return null;
 	}
 
 	public List<Document> getCustomerDocuments(Long idCustomer) {
