@@ -32,36 +32,7 @@ public class DocumentService extends AbstractServiceUtils{
 	private FileHandlerService fhService;
 	
 	
-	public ResponseEntity<Resource> viewDocument(Long idDoc) throws SQLException{
-		Document document = documentRepository.findById(idDoc).get();
-		
-		return null;
-	}
-
-	public List<Document> getCustomerDocuments(Long idCustomer) {
-		
-		List<Document> newDocuments = null;
-		
-		// se guarda el cliente en una variable auxiliar
-		Customer auxCustomer = customerRepository.findCustomerBycustomerId(idCustomer);
-
-		// se comprueba si el cliente tiene documentos.
-		if (!auxCustomer.getDocuments().isEmpty()) {			
-			
-			// se inicializa la lista
-			newDocuments = new ArrayList<Document>();
-			
-			// se rellena la lista
-			for (Document d : auxCustomer.getDocuments()) {
-				newDocuments.add(new Document(d.getIdDocument(), d.getFileName(), d.getFileSize(), d.getFileType()));
-			}
-		}
-		
-		// se devuelve la lista
-		return newDocuments;
-	}
-	
-	
+	//Añade un documento a un customer
 	public Customer addDocument(Long id, MultipartFile mpf) {
 		Customer c = null;
 
@@ -73,8 +44,7 @@ public class DocumentService extends AbstractServiceUtils{
 							mpf.getContentType()));
 
 			c = customerRepository.findCustomerBycustomerId(id);
-			c.setDocuments(c.getDocuments() != null && !c.getDocuments().isEmpty() ? c.getDocuments() : new ArrayList<>());
-			c.getDocuments().add(doc);
+			c.setDocument(doc);
 			customerRepository.save(c);
 
 		} catch (NumberFormatException e) {
@@ -84,6 +54,14 @@ public class DocumentService extends AbstractServiceUtils{
 		return c;
 	}
 	
-	
+	//Descarga un documento
+	public ResponseEntity<Resource> downloadDocument(Long id) throws SQLException {
+		Customer c = customerRepository.findCustomerBycustomerId(id);
+		Document d = documentRepository.findById(c.getDocument().getIdDocument()).get();
+
+		return ResponseEntity.ok().contentType(MediaType.parseMediaType(d.getFileType()))
+				.header("hola", "attachment; filename=\"" + d.getFileName() + "\"")
+				.body(new ByteArrayResource(d.getFile().getBytes(1L, (int) d.getFile().length())));
+	}
 	
 }

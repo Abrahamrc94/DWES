@@ -31,10 +31,8 @@ public class Customer implements Serializable{
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Pedido> pedidos;
 	
-	@OneToMany
-	@JoinColumn(name="customer_id", foreignKey = @ForeignKey(name="customer_id_fk"), nullable = true)
 	@JsonIgnore
-	private List<Document> documents;
+	private Document document;
 	
 	
 	
@@ -114,12 +112,12 @@ public class Customer implements Serializable{
 		this.pedidos = pedidos;
 	}
 	
-	public List<Document> getDocuments() {
-		return documents;
+	public Document getDocument() {
+		return document;
 	}
 
-	public void setDocuments(List<Document> documents) {
-		this.documents = documents;
+	public void setDocument(Document document) {
+		this.document = document;
 	}
 	
 }
