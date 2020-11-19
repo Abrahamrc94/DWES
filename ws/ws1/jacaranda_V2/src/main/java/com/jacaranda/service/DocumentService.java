@@ -1,18 +1,17 @@
 package com.jacaranda.service;
 
-import java.awt.PageAttributes.MediaType;
-import java.net.http.HttpHeaders;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+
 
 import com.jacaranda.entity.Customer;
 import com.jacaranda.entity.Document;
@@ -58,10 +57,11 @@ public class DocumentService extends AbstractServiceUtils{
 	public ResponseEntity<Resource> downloadDocument(Long id) throws SQLException {
 		Customer c = customerRepository.findCustomerBycustomerId(id);
 		Document d = documentRepository.findById(c.getDocument().getIdDocument()).get();
-
-		return ResponseEntity.ok()MediaType.APPLICATION_OCTET_STREAM_VALUE
+		
+		return ResponseEntity.ok().contentType(MediaType.parseMediaType(d.getFileType()))
 				.header("hola", "attachment; filename=\"" + d.getFileName() + "\"")
 				.body(new ByteArrayResource(d.getFile().getBytes(1L, (int) d.getFile().length())));
+		
 	}
 	
 }
