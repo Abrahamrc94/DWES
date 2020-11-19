@@ -59,7 +59,7 @@ public class DocumentService extends AbstractServiceUtils{
 		Customer c = customerRepository.findCustomerBycustomerId(id);
 		Document d = documentRepository.findById(c.getDocument().getIdDocument()).get();
 
-		return ResponseEntity.ok().contentType(MediaType.parseMediaType(d.getFileType()))
+		return ResponseEntity.ok()MediaType.APPLICATION_OCTET_STREAM_VALUE
 				.header("hola", "attachment; filename=\"" + d.getFileName() + "\"")
 				.body(new ByteArrayResource(d.getFile().getBytes(1L, (int) d.getFile().length())));
 	}
