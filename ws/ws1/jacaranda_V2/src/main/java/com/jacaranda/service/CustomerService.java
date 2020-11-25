@@ -24,6 +24,13 @@ public class CustomerService {
 	// Servicios
 	@Autowired
 	private UpdateService updateService;
+	
+	
+	public CustomerService(CustomerRepository customerRepository, PedidoRepository pedidoReposiroty) {
+		this.customerRepository=customerRepository;
+		this.pedidoRepository = pedidoReposiroty;
+		
+	}
 
 	//Get de todos los customers
 	public ResponseEntity<?> getCustomers() {

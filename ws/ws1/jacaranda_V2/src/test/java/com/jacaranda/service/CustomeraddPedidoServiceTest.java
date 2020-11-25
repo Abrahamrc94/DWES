@@ -2,6 +2,9 @@ package com.jacaranda.service;
 
 import static org.mockito.Mockito.mock;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -26,21 +29,29 @@ public class CustomeraddPedidoServiceTest {
 	
 	@BeforeEach
 	private void init() {
-		sut= new CustomerService();
+		
 		mockCustomerRepo = mock(CustomerRepository.class);
 		mockPedidoRepo = mock(PedidoRepository.class);
 		mockCustomer = mock(Customer.class);
 		mockPedido = mock(Pedido.class);
 		
+		sut= new CustomerService(mockCustomerRepo, mockPedidoRepo);
 	}
 	
 	@Test
 	public void addingPedidoToCustomer() {
 		
+		List<Pedido> pedidos = new ArrayList<>();
+		
 		Mockito.when(mockCustomerRepo.findCustomerBycustomerId(Mockito.anyLong())).thenReturn(mockCustomer);
-		//Mockito.when(mockPedido.setCustomer(idCustomer))
-		//mockPedido.setCustomer(mockCustomer.getId());
+		mockPedido.setCustomer(mockCustomer.getId());
 		Mockito.when(mockPedidoRepo.save(Mockito.any(Pedido.class))).thenReturn(mockPedido);
+		Mockito.when(mockCustomer.getPedidos()).thenReturn(pedidos);
+		Customer c = sut.addPedido(mockPedido, (long) 1);
+		
+		
+		assert(c.getPedidos().contains(mockPedido));
+        
 		
 	}
 	
