@@ -27,7 +27,7 @@ public class DocumentAddDocumentServiceTest {
 
 	
 	
-private DocumentService sut;
+	private DocumentService sut;
 	
 	private CustomerRepository mockCustomerRepo;
 	private DocumentRepository mockDocumentRepo;
@@ -63,21 +63,15 @@ private DocumentService sut;
 		sut.setLogger(mockLogger);
 		sut.setFhService(mockFileHandlerService);
 	}
-	
+
 	@Test
 	public void addingDocumentToCustomerSuccessfully() {
 		
 		
-		
-		//List<Document> documents = new ArrayList<>();
-		
 		when(mockCustomerRepo.findCustomerBycustomerId(Mockito.anyLong())).thenReturn(mockCustomer);
 		when(mockCustomer.getDocument()).thenReturn(mockDocument);
 		
-		Customer c = sut.addDocument((long) 1, mockMPF);
-		
-		//verify(mockCustomer, atMost(3)).getDocument();
-		//verify(mockDocumentRepo, atMostOnce()).save(Mockito.any(Document.class));
+		Customer c = sut.addDocument(Mockito.anyLong(), mockMPF);
 		
 		assert(c.getDocument().equals(mockDocument));
 	}

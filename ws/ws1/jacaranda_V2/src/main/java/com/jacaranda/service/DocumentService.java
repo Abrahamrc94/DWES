@@ -23,8 +23,9 @@ public class DocumentService extends AbstractServiceUtils{
 	
 	
 
-	public DocumentService(CustomerRepository mockCustomerRepo, DocumentRepository mockDocumentRepo) {
-		super();
+	public DocumentService(CustomerRepository customerRepo, DocumentRepository documentRepo) {
+		this.customerRepository=customerRepo;
+		this.documentRepository=documentRepo;
 	}
 
 	@Autowired
