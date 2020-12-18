@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,7 @@ import com.jacaranda.entity.Producto;
 import com.jacaranda.service.ProductoService;
 
 @RestController
+@CrossOrigin(origins="*")
 @RequestMapping(path="/api")
 public class ProductoController {
 
@@ -32,15 +34,9 @@ public class ProductoController {
 		return productoService.getProducts();
 	}
 	
-	//Devuelve un producto en concreto segun el nombre
-	@GetMapping("/producto/{nombre}")
-	public ResponseEntity<?> getProductoNombre(@PathVariable String nombre){
-		return ResponseEntity.ok(productoService.getProductoByNombre(nombre));
-	}
-	
 	//Devuelve un producto segun el id
 	@GetMapping("/producto/{id}")
-	public ResponseEntity<?> getProductoId(@PathVariable int id){
+	public ResponseEntity<?> getProductoId(@PathVariable Long id){
 		return ResponseEntity.ok(productoService.getProductoById(id));
 	}
 	
@@ -60,14 +56,14 @@ public class ProductoController {
 	
 	//Modifica un producto PUT
 	@PutMapping(path = "/producto/{id}")
-	public ResponseEntity<?> updateProducto(@PathVariable int id, @RequestBody Producto sent) {
+	public ResponseEntity<?> updateProducto(@PathVariable Long id, @RequestBody Producto sent) {
 		return productoService.updateProducto(id, sent);
 	}
 		
 	
 	
 	//Borra un producto
-	@DeleteMapping("/productos/{id}")
+	@DeleteMapping("/producto/{id}")
 	public void deleteProducto(@RequestBody int id){
 		productoService.deleteProducto(id);
 	}

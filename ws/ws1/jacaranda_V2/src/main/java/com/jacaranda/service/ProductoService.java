@@ -37,7 +37,7 @@ public class ProductoService {
 	}
 	
 	//Get para un producto por id
-	public Producto getProductoById(int id) {
+	public Producto getProductoById(Long id) {
 		return productoRepository.findProductoById(id);
 	
 	}
@@ -53,7 +53,7 @@ public class ProductoService {
 	}
 	
 	//Actualizar un producto
-	public ResponseEntity<?> updateProducto(int id, Producto sent) {
+	public ResponseEntity<?> updateProducto(Long id, Producto sent) {
 		Producto p = productoRepository.findProductoById(id);
 		ResponseEntity<?> response;
 		if (p == null) {

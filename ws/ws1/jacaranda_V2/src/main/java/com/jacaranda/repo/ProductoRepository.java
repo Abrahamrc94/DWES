@@ -16,7 +16,7 @@ public interface ProductoRepository extends CrudRepository<Producto, Integer>{
 		public  Producto findProductoByNombre(String nombre);
 
 		//Busca un producto por id
-		public Producto findProductoById(int id);
+		public Producto findProductoById(Long id);
 		
 		
 		// Get de todos los productos ordenado por nombre
