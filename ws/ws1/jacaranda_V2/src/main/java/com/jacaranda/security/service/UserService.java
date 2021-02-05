@@ -6,10 +6,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.edu.security.model.User;
-import com.edu.security.model.dto.UserDTO;
-import com.edu.security.model.dto.UserDTOConverter;
-import com.edu.security.repo.UserRepository;
+import com.jacaranda.security.model.User;
+import com.jacaranda.security.model.dto.UserDTO;
+import com.jacaranda.security.model.dto.UserDTOConverter;
+import com.jacaranda.security.repo.UserRepository;
 
 @Service("userService")
 public class UserService implements UserDetailsService {

@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jacaranda.entity.Pedido;
 import com.jacaranda.entity.Producto;
 import com.jacaranda.service.ProductoService;
 
 @RestController
-@CrossOrigin(origins="*")
+
+@CrossOrigin(origins = "*")
 @RequestMapping(path="/api")
 public class ProductoController {
 
@@ -33,6 +33,7 @@ public class ProductoController {
 	public ResponseEntity<?> getProductos(){
 		return productoService.getProducts();
 	}
+	
 	
 	//Devuelve un producto segun el id
 	@GetMapping("/producto/{id}")
@@ -63,8 +64,10 @@ public class ProductoController {
 	
 	
 	//Borra un producto
-	@DeleteMapping("/producto/{id}")
-	public void deleteProducto(@RequestBody int id){
+
+	@DeleteMapping("/productos/{id}")
+	public void deleteProducto(@RequestBody Long id){
+
 		productoService.deleteProducto(id);
 	}
 

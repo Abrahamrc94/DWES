@@ -67,8 +67,8 @@ public class ProductoService {
 	
 	
 	//Borrar un producto
-	public void deleteProducto(int id) {
-		productoRepository.deleteById(id);;
+	public void deleteProducto(Long id) {
+		productoRepository.deleteById(id);
 	}
 	
 	
