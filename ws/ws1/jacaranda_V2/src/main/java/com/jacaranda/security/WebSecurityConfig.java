@@ -1,10 +1,10 @@
 package com.jacaranda.security;
 
-<<<<<<< Updated upstream
+
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-=======
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +12,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
->>>>>>> Stashed changes
+
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -56,22 +56,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		web.ignoring().anyRequest();
 	}
 	
-<<<<<<< Updated upstream
-//	@Override
-//	protected void configure(HttpSecurity http) throws Exception {
-//		http
-//			.authorizeRequests()
-//				.antMatchers("/*").permitAll()
-//				.anyRequest().authenticated()
-//				.and()
-//			.formLogin()
-//				.loginPage("/login")
-//				.permitAll()
-//				.and()
-//			.logout()
-//				.permitAll();
-//	}
-=======
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable().authorizeRequests()
@@ -85,7 +69,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 			.addFilterBefore(jwtAuthorizationFilter, BasicAuthenticationFilter.class)
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
->>>>>>> Stashed changes
+
 	
 	@Bean
 	public PasswordEncoder passwordEnconder() {

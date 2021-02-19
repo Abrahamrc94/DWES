@@ -68,7 +68,8 @@ public class ProductoService {
 	
 	//Borrar un producto
 	public void deleteProducto(Long id) {
-		productoRepository.deleteById(id);
+		Producto p = productoRepository.findProductoById(id);
+		productoRepository.delete(p);
 	}
 	
 	
